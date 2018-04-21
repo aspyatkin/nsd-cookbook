@@ -41,7 +41,8 @@ node[id]['zones'].each do |fqdn|
     variables(
       fqdn: fqdn,
       master_fqdn: node[id]['master']['fqdn'],
-      master_ip_address: node[id]['master']['ip_address'],
+      master_ipv4_address: node[id]['master']['ipv4_address'],
+      master_ipv6_address: node[id]['master']['ipv6_address'],
       master_contact: node[id]['master']['contact'],
       slaves: node[id]['slaves'],
       serial: ::DateTime.now.strftime('%Y%m%d01'),
@@ -57,6 +58,7 @@ template service_conf_file do
   owner 'root'
   group node['root_group']
   variables(
+    enable_ipv6: node[id]['enable_ipv6'],
     service_user: service_user,
     zone_dir: zone_dir,
     log_file: '/var/log/nsd.log',

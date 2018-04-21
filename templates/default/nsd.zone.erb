@@ -14,8 +14,14 @@ $TTL <%= @ttl %>
 <% end %>
 
 <% if @master_fqdn.split('.').drop(1).join('.') == @fqdn %>
-<%= @master_fqdn.split('.')[0] %> IN A <%= @master_ip_address %>
-<% @slaves.each do |slave_fqdn, slave_ip_address| %>
-<%= slave_fqdn.split('.')[0] %> IN A <%= slave_ip_address %>
+<%= @master_fqdn.split('.')[0] %> IN A <%= @master_ipv4_address %>
+<% unless @master_ipv6_address.nil? %>
+<%= @master_fqdn.split('.')[0] %> IN AAAA <%= @master_ipv6_address %>
+<% end %>
+<% @slaves.each do |slave_fqdn, slave_entry| %>
+<%= slave_fqdn.split('.')[0] %> IN A <%= slave_entry['ipv4_address'] %>
+<% unless slave_entry.fetch('ipv6_address').nil? %>
+<%= slave_fqdn.split('.')[0] %> IN AAAA <%= slave_entry['ipv6_address'] %>
+<% end %>
 <% end %>
 <% end %>

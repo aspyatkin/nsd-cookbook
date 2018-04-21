@@ -1,7 +1,7 @@
 server:
     port: 53
     do-ip4: yes
-    do-ip6: no
+    do-ip6: <%= @enable_ipv6 ? 'yes' : 'no' %>
     username: "<%= @service_user %>"
     hide-version: yes
     zonesdir: "<%= @zone_dir %>"
@@ -19,6 +19,6 @@ key:
 zone:
     name: <%= fqdn %>
     zonefile: <%= fqdn %>.zone
-    allow-notify: <%= @master_ip_address %> <%= "#{@key_name.gsub('.', '_')}_key" %>
-    request-xfr: <%= @master_ip_address %> <%= "#{@key_name.gsub('.', '_')}_key" %>
+    allow-notify: <%= @master_ipv4_address %> <%= "#{@key_name.gsub('.', '_')}_key" %>
+    request-xfr: <%= @master_ipv4_address %> <%= "#{@key_name.gsub('.', '_')}_key" %>
 <% end %>

@@ -35,6 +35,7 @@ template service_conf_file do
   owner 'root'
   group node['root_group']
   variables(
+    enable_ipv6: node[id]['enable_ipv6'],
     service_user: service_user,
     zone_dir: zone_dir,
     log_file: '/var/log/nsd.log',
@@ -42,7 +43,7 @@ template service_conf_file do
     key_name: instance.fqdn,
     key_secret: secret.get("nsd:keys:#{instance.fqdn}", prefix_fqdn: false),
     zones: node[id]['zones'],
-    master_ip_address: node[id]['master']['ip_address']
+    master_ipv4_address: node[id]['master']['ipv4_address']
   )
   mode 0644
   action :create

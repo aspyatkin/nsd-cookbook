@@ -1,5 +1,6 @@
 # nsd cookbook
-
+[![Chef cookbook](https://img.shields.io/cookbook/v/nsd.svg?style=flat-square)]()
+[![license](https://img.shields.io/github/license/aspyatkin/nsd-cookbook.svg?style=flat-square)]()  
 A Chef cookbook to install nsd master and slaves along with initial zone configuration.
 
 ## Recipes
@@ -19,14 +20,22 @@ Better to explain it by an extract from node attributes:
 ```json
     ...
     "nsd": {
+      "enable_ipv6": true,
       "master": {
         "fqdn": "ns1.example.com",
-        "ip_address": "1.1.1.1",
+        "ipv4_address": "1.1.1.1",
+        "ipv6_address": "2001:0db8:0a0b:12f0:0000:0000:0000:0001",
         "contact": "hostmaster@example.com"
       },
       "slaves": {
-        "ns2.example.com": "2.2.2.2",
-        "ns3.example.com": "3.3.3.3"
+        "ns2.example.com": {
+          "ipv4_address": "2.2.2.2",
+          "ipv6_address": "2001:0db8:0a0b:12f0:0000:0000:0000:0002"
+        },
+        "ns3.example.com": {
+          "ipv4_address": "3.3.3.3",
+          "ipv6_address": "2001:0db8:0a0b:12f0:0000:0000:0000:0003"
+        }
       },
       "zones": [
         "example.com",
@@ -59,7 +68,7 @@ $ dd if=/dev/random count=1 bs=32 2> /dev/null | base64
 ```
 
 ## Limitations
-At this juncture, this cookbook only supports IPv4. Also, no firewall rules are set up.
+This cookbook does not set up any firewall rules.
 
 ## License
 MIT @ [Alexander Pyatkin](https://github.com/aspyatkin)

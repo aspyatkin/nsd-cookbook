@@ -2,7 +2,7 @@ name 'nsd'
 maintainer 'Alexander Pyatkin'
 maintainer_email 'aspyatkin@gmail.com'
 license 'MIT'
-version '0.1.0'
+version '0.2.0'
 description 'Install and configure NSD'
 
 recipe 'nsd::default', 'Install and configure NSD'
