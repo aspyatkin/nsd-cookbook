@@ -35,6 +35,7 @@ template service_conf_file do
   owner 'root'
   group node['root_group']
   variables(
+    bind_addresses: node[id]['slaves'][instance.fqdn]['bind_addresses'] || [],
     enable_ipv6: node[id]['enable_ipv6'],
     service_user: service_user,
     zone_dir: zone_dir,

@@ -20,7 +20,7 @@ $TTL <%= @ttl %>
 <% end %>
 <% @slaves.each do |slave_fqdn, slave_entry| %>
 <%= slave_fqdn.split('.')[0] %> IN A <%= slave_entry['ipv4_address'] %>
-<% unless slave_entry.fetch('ipv6_address').nil? %>
+<% unless slave_entry.fetch('ipv6_address', nil).nil? %>
 <%= slave_fqdn.split('.')[0] %> IN AAAA <%= slave_entry['ipv6_address'] %>
 <% end %>
 <% end %>

@@ -2,6 +2,9 @@ server:
     port: 53
     do-ip4: yes
     do-ip6: <%= @enable_ipv6 ? 'yes' : 'no' %>
+    <% @bind_addresses.each do |ip_address| %>
+    ip-address: "<%= ip_address %>"
+    <% end %>
     username: "<%= @service_user %>"
     hide-version: yes
     zonesdir: "<%= @zone_dir %>"
