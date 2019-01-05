@@ -1,5 +1,5 @@
 server:
-    port: 53
+    port: <%= @port %>
     do-ip4: yes
     do-ip6: <%= @enable_ipv6 ? 'yes' : 'no' %>
     <% @bind_addresses.each do |ip_address| %>

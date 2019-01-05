@@ -2,9 +2,9 @@ $ORIGIN <%= @fqdn %>.
 $TTL <%= @ttl %>
 @ IN SOA <%= @master_fqdn %>. <%= @master_contact.gsub('@', '.') %>. (
     <%= @serial %>
-    3600
-    900
-    1209600
+    <%= @refresh %>
+    <%= @retry %>
+    <%= @expire %>
     <%= @ttl %>
 )
 
