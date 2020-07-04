@@ -18,12 +18,11 @@ default_action :create
 
 action :create do
   zone_file = "#{::File.join(new_resource.zone_dir, new_resource.fqdn)}.zone"
-  instance = ::ChefCookbook::Instance::Helper.new(node)
 
   template zone_file do
     cookbook 'nsd'
     source 'nsd.zone.erb'
-    owner instance.root
+    owner 'root'
     group node['root_user']
     variables(
       fqdn: new_resource.fqdn,

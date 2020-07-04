@@ -28,26 +28,30 @@ action :install do
     action :create
   end
 
+  systemd_unit new_resource.service do
+    action :nothing
+  end
+  systemd_unit_resource = "systemd_unit[#{new_resource.service}]"
+
+  service new_resource.service do
+    action :nothing
+  end
+  service_resource = "service[#{new_resource.service}]"
+
   %w(
     nsd
   ).each do |pkg_name|
     package pkg_name do
       action :install
+      notifies :mask, systemd_unit_resource, :before
+      notifies :unmask, systemd_unit_resource, :immediately
     end
   end
-
-  service_resource = "service[#{new_resource.service}]"
-
-  service new_resource.service do
-    action [:start, :enable]
-  end
-
-  instance = ::ChefCookbook::Instance::Helper.new(node)
 
   zone_dir = ::File.join(new_resource.conf_dir, 'zones')
 
   directory zone_dir do
-    owner instance.root
+    owner 'root'
     group node['root_group']
     mode 0755
     action :create
@@ -56,7 +60,7 @@ action :install do
   template ::File.join(new_resource.conf_dir, 'nsd.conf') do
     cookbook 'nsd'
     source 'nsd.slave.conf.erb'
-    owner instance.root
+    owner 'root'
     group node['root_group']
     variables(
       port: new_resource.port,
@@ -75,5 +79,9 @@ action :install do
     sensitive true
     action :create
     notifies :restart, "service[#{new_resource.service}]", :delayed
+  end
+
+  service new_resource.service do
+    action [:start, :enable]
   end
 end
