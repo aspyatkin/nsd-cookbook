@@ -17,15 +17,20 @@ key:
     name: "<%= "#{key_name.gsub('.', '_')}_key" %>"
     algorithm: "hmac-sha256"
     secret: "<%= secret %>"
-
 <% end %>
-# Zone configuration
-<% @zones.each do |fqdn| %>
-zone:
-    name: <%= fqdn %>
-    zonefile: <%= fqdn %>.zone
+
+# Zone pattern
+pattern:
+    name: "default"
+    zonefile: "%s/%s.zone"
     <% @slaves.each do |slave_fqdn, slave_entry| %>
     notify: <%= slave_entry['ipv4_address'] %> <%= "#{slave_fqdn.gsub('.', '_')}_key" %>
     provide-xfr: <%= slave_entry['ipv4_address'] %> <%= "#{slave_fqdn.gsub('.', '_')}_key" %>
     <% end %>
+
+# Zone configuration
+<% @zones.each do |fqdn| %>
+zone:
+    name: <%= fqdn %>
+    include-pattern: "default"
 <% end %>

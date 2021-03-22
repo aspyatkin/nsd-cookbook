@@ -17,7 +17,14 @@ property :ttl, Integer, default: 600
 default_action :create
 
 action :create do
-  zone_file = "#{::File.join(new_resource.zone_dir, new_resource.fqdn)}.zone"
+  zone_file = ::File.join(new_resource.zone_dir, new_resource.fqdn, "#{new_resource.fqdn}.zone")
+
+  directory ::File.dirname(zone_file) do
+    owner 'root'
+    group node['root_group']
+    mode 0755
+    action :create
+  end
 
   template zone_file do
     cookbook 'nsd'

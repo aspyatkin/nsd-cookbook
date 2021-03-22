@@ -17,11 +17,16 @@ key:
     algorithm: "hmac-sha256"
     secret: "<%= @key_secret %>"
 
+# Zone pattern
+pattern:
+    name: "default"
+    zonefile: "%s/%s.zone"
+    allow-notify: <%= @master_ipv4_address %> <%= "#{@key_name.gsub('.', '_')}_key" %>
+    request-xfr: <%= @master_ipv4_address %> <%= "#{@key_name.gsub('.', '_')}_key" %>
+
 # Zone configuration
 <% @zones.each do |fqdn| %>
 zone:
     name: <%= fqdn %>
-    zonefile: <%= fqdn %>.zone
-    allow-notify: <%= @master_ipv4_address %> <%= "#{@key_name.gsub('.', '_')}_key" %>
-    request-xfr: <%= @master_ipv4_address %> <%= "#{@key_name.gsub('.', '_')}_key" %>
+    include-pattern: "default"
 <% end %>
